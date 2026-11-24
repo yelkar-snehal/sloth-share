@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sloth Share</title>
+  <meta name="description" content="Paste a song link from Spotify, Apple Music or YouTube Music and get the same song in your friend's app.">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Sloth Share</h1>
+      <p>Too lazy to search? Paste a song, get it in your friend's app.</p>
+    </header>
+
+    <form id="form" autocomplete="off">
+      <label for="link">Song link</label>
+      <div class="row">
+        <input id="link" type="url" inputmode="url" placeholder="Paste a Spotify, Apple Music or YouTube Music link" required>
+        <button id="paste" type="button">Paste</button>
+      </div>
+      <p id="detected" class="hint" aria-live="polite"></p>
+
+      <fieldset>
+        <legend>Send as</legend>
+        <div class="segmented">
+          <label><input type="radio" name="dest" value="apple"><span>Apple Music</span></label>
+          <label><input type="radio" name="dest" value="spotify"><span>Spotify</span></label>
+          <label><input type="radio" name="dest" value="youtube"><span>YouTube Music</span></label>
+        </div>
+      </fieldset>
+
+      <div class="row bottom">
+        <label class="region">Region
+          <select id="region">
+            <option value="in">India</option>
+            <option value="us">United States</option>
+            <option value="gb">United Kingdom</option>
+            <option value="ae">UAE</option>
+            <option value="ca">Canada</option>
+            <option value="au">Australia</option>
+            <option value="sg">Singapore</option>
+            <option value="de">Germany</option>
+          </select>
+        </label>
+        <button id="convert" class="primary" type="submit">Convert</button>
+      </div>
+    </form>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="result" aria-live="polite"></section>
+
+    <footer>
+      <p>On Android, install this page from the browser menu, then use Share → Sloth Share in any music app. On iPhone, copy the link and tap Paste, or use the Shortcut in the project README.</p>
+    </footer>
+  </main>
+</body>
+</html>
