@@ -4,8 +4,12 @@
 export const SERVICES = {
   apple: 'Apple Music',
   spotify: 'Spotify',
-  youtube: 'YouTube Music',
+  ytmusic: 'YouTube Music',
+  youtube: 'YouTube',
 };
+
+/** YouTube and YouTube Music share video ids, so a link converts between them exactly. */
+export const YT_FAMILY = new Set(['ytmusic', 'youtube']);
 
 /** Return the first http(s) URL in shared text such as "Listen to X on Spotify: https://...". */
 export function firstUrl(text) {
@@ -41,8 +45,9 @@ export function detect(raw) {
     return { service: 'apple', unsupported: 'open the song itself, not the album, and copy its link' };
   }
   if (host === 'music.youtube.com' || host === 'youtube.com') {
-    const v = url.searchParams.get('v');
-    return v ? { service: 'youtube', id: v } : { service: 'youtube', unsupported: 'only single songs are supported' };
+    const service = host === 'music.youtube.com' ? 'ytmusic' : 'youtube';
+    const v = url.searchParams.get('v') || url.pathname.match(/^\/(?:shorts|live)\/([\w-]{11})/)?.[1];
+    return v ? { service, id: v } : { service, unsupported: 'only single songs are supported' };
   }
   if (host === 'youtu.be') {
     const id = url.pathname.slice(1).split('/')[0];

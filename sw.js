@@ -1,6 +1,6 @@
 // Network first, so a new deploy shows at once. The cached shell only helps when offline.
-const CACHE = 'sloth-share-v1';
-const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/match.js', '/manifest.webmanifest', '/icons/icon.svg'];
+const CACHE = 'sloth-share-v5';
+const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/match.js', '/pairing.js', '/on-repeat.js', '/manifest.webmanifest', '/icons/icon.svg'];
 
 self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(

@@ -17,7 +17,9 @@ test('detects Apple Music song links in album and song form', () => {
 });
 
 test('detects YouTube Music and YouTube links', () => {
-  assert.deepEqual(detect('https://music.youtube.com/watch?v=dQw4w9WgXcQ&si=x'), { service: 'youtube', id: 'dQw4w9WgXcQ' });
+  assert.deepEqual(detect('https://music.youtube.com/watch?v=dQw4w9WgXcQ&si=x'), { service: 'ytmusic', id: 'dQw4w9WgXcQ' });
+  assert.deepEqual(detect('https://www.youtube.com/watch?v=dQw4w9WgXcQ'), { service: 'youtube', id: 'dQw4w9WgXcQ' });
+  assert.deepEqual(detect('https://youtube.com/shorts/dQw4w9WgXcQ'), { service: 'youtube', id: 'dQw4w9WgXcQ' });
   assert.deepEqual(detect('https://youtu.be/dQw4w9WgXcQ?si=x'), { service: 'youtube', id: 'dQw4w9WgXcQ' });
   assert.deepEqual(detect('https://m.youtube.com/watch?v=dQw4w9WgXcQ'), { service: 'youtube', id: 'dQw4w9WgXcQ' });
 });

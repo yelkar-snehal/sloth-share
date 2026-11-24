@@ -1,4 +1,4 @@
-// GET /api/youtube?q=<text> -> YouTube Music links for the best matching music videos.
+// GET /api/youtube?q=<text> -> the best matching music videos (the page builds YouTube or YouTube Music links).
 //
 // Optional. Set YOUTUBE_API_KEY (YouTube Data API v3, free quota) as an encrypted variable.
 // Without it the page falls back to a YouTube Music search link.
@@ -40,7 +40,7 @@ export async function onRequestGet({ request, env }) {
       title: decode(it.snippet.title),
       artist: decode(it.snippet.channelTitle).replace(/\s*-\s*Topic$/i, '').replace(/VEVO$/i, ''),
       art: it.snippet.thumbnails?.medium?.url || '',
-      url: `https://music.youtube.com/watch?v=${it.id.videoId}`,
+      id: it.id.videoId,
     }));
     return json({ items }, 200, 3600);
   } catch (err) {

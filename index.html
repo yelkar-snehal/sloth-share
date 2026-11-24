@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sloth Share</title>
   <meta name="description" content="Paste a song link from Spotify, Apple Music or YouTube Music and get the same song in your friend's app.">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#1a73e8">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
@@ -13,17 +13,34 @@
   <script type="module" src="/app.js"></script>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <!-- Line icons from Lucide (ISC license, lucide.dev) -->
+    <defs>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></symbol>
+      <symbol id="i-instagram" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+      <symbol id="i-cup" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M6 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/></symbol>
+    </defs>
+  </svg>
   <main>
     <header>
-      <h1>Sloth Share</h1>
+      <div class="head-row">
+        <div class="brand">
+          <img id="mascot" src="/assets/mascot.png" alt="" width="64" height="64" hidden>
+          <h1>Sloth Share</h1>
+        </div>
+        <button id="install" type="button" class="small" hidden>Install app</button>
+      </div>
       <p>Too lazy to search? Paste a song, get it in your friend's app.</p>
     </header>
 
     <form id="form" autocomplete="off">
       <label for="link">Song link</label>
       <div class="row">
-        <input id="link" type="url" inputmode="url" placeholder="Paste a Spotify, Apple Music or YouTube Music link" required>
-        <button id="paste" type="button">Paste</button>
+        <input id="link" type="url" inputmode="url" placeholder="Paste a Spotify, Apple Music or YouTube link" required>
+        <button id="paste" class="primary" type="button">Paste &amp; convert</button>
       </div>
       <p id="detected" class="hint" aria-live="polite"></p>
 
@@ -32,13 +49,14 @@
         <div class="segmented">
           <label><input type="radio" name="dest" value="apple"><span>Apple Music</span></label>
           <label><input type="radio" name="dest" value="spotify"><span>Spotify</span></label>
-          <label><input type="radio" name="dest" value="youtube"><span>YouTube Music</span></label>
+          <label><input type="radio" name="dest" value="ytmusic"><span>YouTube Music</span></label>
+          <label><input type="radio" name="dest" value="youtube"><span>YouTube</span></label>
         </div>
       </fieldset>
 
       <div class="row bottom">
-        <label class="region">Region
-          <select id="region">
+        <label class="region">Friend's country
+          <select id="region" aria-describedby="region-hint">
             <option value="in">India</option>
             <option value="us">United States</option>
             <option value="gb">United Kingdom</option>
@@ -49,15 +67,28 @@
             <option value="de">Germany</option>
           </select>
         </label>
-        <button id="convert" class="primary" type="submit">Convert</button>
+        <button id="convert" type="submit" hidden>Convert</button>
       </div>
+      <p id="region-hint" class="hint">Each country has its own music catalogue. Sharing with someone abroad? Pick their country so the link works for them.</p>
     </form>
+
+    <details class="repeat">
+      <summary>On repeat <span>my songs, in your app</span></summary>
+      <div id="repeat-list" class="repeat-list"></div>
+    </details>
 
     <p id="status" class="status" role="status" aria-live="polite"></p>
     <section id="result" aria-live="polite"></section>
 
     <footer>
-      <p>On Android, install this page from the browser menu, then use Share → Sloth Share in any music app. On iPhone, copy the link and tap Paste, or use the Shortcut in the project README.</p>
+      <p>Made by Snehal Yelkar. <a href="https://github.com/yelkar-snehal/sloth-share" target="_blank" rel="noopener">Open source on GitHub</a>.</p>
+      <nav class="socials" aria-label="Snehal Yelkar online">
+        <a class="social s-yellow" href="https://yelkar-snehal.github.io/resume/" target="_blank" rel="noopener" aria-label="Portfolio" title="Portfolio"><svg class="ic" aria-hidden="true"><use href="#i-globe"/></svg></a>
+        <a class="social s-green" href="https://github.com/yelkar-snehal" target="_blank" rel="noopener me" aria-label="GitHub" title="GitHub"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg></a>
+        <a class="social s-blue" href="https://www.linkedin.com/in/snehal-yelkar-573b13157/" target="_blank" rel="noopener me" aria-label="LinkedIn" title="LinkedIn"><svg class="ic" aria-hidden="true"><use href="#i-linkedin"/></svg></a>
+        <a class="social s-red" href="https://www.instagram.com/snehullabaloo/" target="_blank" rel="noopener me" aria-label="Instagram" title="Instagram"><svg class="ic" aria-hidden="true"><use href="#i-instagram"/></svg></a>
+        <a class="social s-blue" href="mailto:yelkarsnehal9@gmail.com" aria-label="Email" title="Email"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg></a>
+      </nav>
     </footer>
   </main>
 </body>

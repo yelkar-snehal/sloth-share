@@ -1,6 +1,6 @@
 # Sloth Share
 
-Too lazy to search for a song in your friend's app? Paste a song link from Spotify, Apple Music or YouTube Music, choose your friend's app, and get the same song's link for that app. It works in any browser, including phones, and costs nothing to run.
+Too lazy to search for a song in your friend's app? Paste a song link from Spotify, Apple Music, YouTube Music or YouTube, choose your friend's app, and get the same song's link for that app. It works in any browser, including phones, and costs nothing to run.
 
 ## How it works
 
@@ -71,10 +71,16 @@ iPhone: websites cannot appear in the Share menu. Copy the song link, open the s
 4. Add the action "URL" with: `https://<project-name>.pages.dev/?to=apple&url=` followed by the URL Encoded result.
 5. Add the action "Open URLs".
 
-Change `to=apple` to `to=spotify` or `to=youtube` to fix the destination, or leave `to=` out to use the last choice.
+Change `to=apple` to `to=spotify`, `to=ytmusic` (YouTube Music) or `to=youtube` to fix the destination, or leave `to=` out to use the last choice.
 
 ## Limits
 
 - Single songs only. Albums and playlists are not supported.
 - Matching uses title, artist and duration. Live versions, remixes and songs that are not available in the chosen region can match the wrong version or nothing, so check a low or medium match before you share it.
 - Apple Music links are per region. Set Region to your friend's country.
+
+## License
+
+The code is MIT. See [LICENSE](LICENSE). The drawings in `assets/` are not: they belong to Snehal Yelkar, all rights reserved.
+
+Icons: [Lucide](https://lucide.dev) (ISC license).
